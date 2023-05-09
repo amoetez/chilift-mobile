@@ -1,16 +1,8 @@
 import React, { useState } from "react";
 import { View, Text, Image, Pressable, StyleSheet } from "react-native";
-import Feather from "react-native-vector-icons/Feather";
-import BleScanner from "./BleConnect.js";
+
 
 const ImgBtn = () => {
-  
-  const [showBleScanner, setShowBleScanner] = useState(false);
-
-
-  const handleShowScannerPress = () => {
-    setShowBleScanner(!showBleScanner);
-  };
 
   return (
     <View style={styles.container}>
@@ -19,7 +11,6 @@ const ImgBtn = () => {
           source={require("../../images/chilift.png")}
           style={styles.logo}
         />
-        
       </View>
       <View style={styles.imageContainer}>
         <Image
@@ -27,17 +18,6 @@ const ImgBtn = () => {
           style={styles.image}
         />
       </View>
-      <Pressable
-          style={styles.connectButton}
-         onPress={handleShowScannerPress}
-          disabled={BleScanner.Connected}
-        >
-          <Text style={styles.connectButtonText}>
-            {BleScanner.Connected ? "Connected" : "Connect"}
-          </Text>
-          <Feather name="bluetooth" size={17} style={styles.connectIcon} />
-      </Pressable>
-      {showBleScanner && <BleScanner />}
     </View>
   );
 };
@@ -62,35 +42,11 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     marginVertical: 20,
   },
-  connectButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#5F7045",
-    borderRadius: 50,
-    marginBottom: 20,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    opacity: 0.8,
-    disabled: {
-      opacity: 0.5,
-    },
-  },
-  connectButtonText: {
-    color: "#fff",
-    fontSize: 17,
-    marginRight: 10,
-    textTransform: "uppercase",
-  },
-  connectIcon: {
-    color: "#fff",
-  },
   imageContainer: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
     width: "90%",
-    
   },
   image: {
     width: "100%",
@@ -100,17 +56,6 @@ const styles = StyleSheet.create({
     borderColor: "#5F7045",
     borderWidth: 2,
     marginBottom: 20,
-  },
-  showScannerButton: {
-    backgroundColor: "#5F7045",
-    borderRadius: 50,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-  },
-  showScannerButtonText: {
-    color: "#fff",
-    fontSize: 17,
-    textTransform: "uppercase",
   },
 });
 
