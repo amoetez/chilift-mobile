@@ -9,7 +9,7 @@ const CHARACTERISTIC_UUID = 'beb5483e-36e1-4688-b7f5-ea07361b26a8';
 
 
 
-const BleScanner = () => {
+const BleScanner = (value) => {
   const [devices, setDevices] = useState([]);
   const [selectedDevice, setSelectedDevice] = useState({});
   const [selectedCharacteristic, setSelectedCharacteristic] = useState({});
@@ -115,6 +115,8 @@ const BleScanner = () => {
       console.log(`Connected to device: ${device.name}(${device.id})`);
       setSelectedDevice(device);
       setConnected(true);
+      discoverServices(device);
+      writeValue(value);
     } catch (error) {
       console.error(`Failed to connect to device: ${device.name}(${device.id})\n`, error);
     }
@@ -151,42 +153,32 @@ const BleScanner = () => {
       console.log(error);
     });
   };
+
   
   const styles = {
     container: {
-      flex: 1,
-      padding: 16,
+      flex: 0,
+      padding: 20,
       backgroundColor: '#F0F0F0',
-    },
-    scannerContainer: {
-      backgroundColor: '#FFFFFF',
-      borderRadius: 8,
-      padding: 16,
-      marginTop: 16,
-    },
-    title: {
-      fontSize: 20,
-      fontWeight: 'bold',
-      marginBottom: 16,
+      borderRadius: 30,
     },
     subtitle: {
       fontSize: 16,
       color: '#888888',
       marginBottom: 8,
     },
-    button: {
-      borderRadius: 8,
-      paddingVertical: 12,
-      paddingHorizontal: 16,
-      marginBottom: 8,
-    },
     scanButton: {
-      backgroundColor: '#007AFF',
+      backgroundColor: "#5F7045",
+    borderRadius: 40,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    marginBottom:  10,
     },
     deviceButton: {
       backgroundColor: '#FFFFFF',
-      borderWidth: 1,
-      borderColor: '#888888',
+      borderwidth: 1,
+      bordercolor: '#888888',
+      borderRadius: 20,
     },
     buttonText: {
       color: '#FFFFFF',
@@ -196,99 +188,50 @@ const BleScanner = () => {
     selectedDeviceContainer: {
       marginTop: 16,
       backgroundColor: '#FFFFFF',
-      borderRadius: 8,
       padding: 16,
     },
     selectedDeviceTitle: {
       fontSize: 20,
       fontWeight: 'bold',
-      marginBottom: 16,
-    },
-    discoverButton: {
-      backgroundColor: '#007AFF',
-    },
-    selectedCharacteristicContainer: {
-      marginTop: 16,
-      backgroundColor: '#FFFFFF',
-      borderRadius: 8,
-      padding: 16,
-    },
-    selectedCharacteristicTitle: {
-      fontSize: 20,
-      fontWeight: 'bold',
-      marginBottom: 16,
+      marginBottom: 5,
     },
     buttonsContainer: {
       flexDirection: 'row',
       justifyContent: 'space-between',
     },
-    writeValueButton: {
-      backgroundColor: '#007AFF',
-      width: '48%',
-    },
+   
   };
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Available Devices:</Text>
-      {isScanning && <Text style={styles.subtitle}>Scanning...</Text>}
       <Pressable
-        style={[styles.button, styles.scanButton]}
+        style={[styles.scanButton]}
         onPress={startScan}
         disabled={isScanning}
       >
         <Text style={styles.buttonText}>Scan</Text>
       </Pressable>
+      {isScanning && <Text style={styles.subtitle}>Scanning...</Text>}
       {devices.map((device) => (
         <Pressable
           key={device.id}
-          style={[styles.button, styles.deviceButton]}
+          style={[styles.deviceButton]}
           onPress={() => connectToDevice(device)}
           disabled={connected}
         >
           <Text style={styles.buttonText}>{device.name || device.id}</Text>
         </Pressable>
       ))}
-      {connected && (
-        <Text style={styles.subtitle}>
-          Connected to device: {selectedDevice.name} ({selectedDevice.id})
-        </Text>
-      )}
       {selectedDevice && (
         <View style={styles.selectedDeviceContainer}>
           <Text style={styles.selectedDeviceTitle}>
             Connected to device: {selectedDevice.name}
           </Text>
-          <Pressable
-            style={[styles.button, styles.discoverButton]}
-            onPress={() => discoverServices(selectedDevice)}
-          >
-            <Text style={styles.buttonText}>Discover Services</Text>
-          </Pressable>
-          {selectedCharacteristic && (
-            <View style={styles.selectedCharacteristicContainer}>
-              <Text style={styles.selectedCharacteristicTitle}>
-                Connected to characteristic: {selectedCharacteristic.id}
-              </Text>
-              <View style={styles.buttonsContainer}>
-                <Pressable
-                  style={[styles.button, styles.writeValueButton]}
-                  onPress={() => writeValue('1')}
-                >
-                  <Text style={styles.buttonText}>Write LASS</Text>
-                </Pressable>
-                <Pressable
-                  style={[styles.button, styles.writeValueButton]}
-                  onPress={() => writeValue('0')}
-                >
-                  <Text style={styles.buttonText}>Write SFER</Text>
-                </Pressable>
-              </View>
-            </View>
-          )}
         </View>
       )}
     </View>
   );
+  
+
 };
   
           

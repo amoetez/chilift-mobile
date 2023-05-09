@@ -1,16 +1,12 @@
 import React, { useState } from "react";
 import { View, Text, Image, Pressable, StyleSheet } from "react-native";
 import Feather from "react-native-vector-icons/Feather";
-import BleScanner from "../Connect/BleConnect.js";
+import BleScanner from "./BleConnect.js";
 
 const ImgBtn = () => {
-  const [isConnected, setIsConnected] = useState(false);
+  
   const [showBleScanner, setShowBleScanner] = useState(false);
 
-  const handleConnectPress = () => {
-    // Implement your connect logic here
-    setIsConnected(true);
-  };
 
   const handleShowScannerPress = () => {
     setShowBleScanner(!showBleScanner);
@@ -23,31 +19,24 @@ const ImgBtn = () => {
           source={require("../../images/chilift.png")}
           style={styles.logo}
         />
-        <Pressable
-          style={styles.connectButton}
-          onPress={handleConnectPress}
-          disabled={isConnected}
-        >
-          <Text style={styles.connectButtonText}>
-            {isConnected ? "Connected" : "Connect"}
-          </Text>
-          <Feather name="bluetooth" size={17} style={styles.connectIcon} />
-        </Pressable>
+        
       </View>
       <View style={styles.imageContainer}>
         <Image
           source={require("../../images/table.jpg")}
           style={styles.image}
         />
-        <Pressable
-          style={styles.showScannerButton}
-          onPress={handleShowScannerPress}
-        >
-          <Text style={styles.showScannerButtonText}>
-            {showBleScanner ? "Hide" : "Show"} Scanner
-          </Text>
-        </Pressable>
       </View>
+      <Pressable
+          style={styles.connectButton}
+         onPress={handleShowScannerPress}
+          disabled={BleScanner.Connected}
+        >
+          <Text style={styles.connectButtonText}>
+            {BleScanner.Connected ? "Connected" : "Connect"}
+          </Text>
+          <Feather name="bluetooth" size={17} style={styles.connectIcon} />
+      </Pressable>
       {showBleScanner && <BleScanner />}
     </View>
   );
@@ -68,9 +57,10 @@ const styles = StyleSheet.create({
     width: "90%",
   },
   logo: {
-    width: "50%",
+    width: "60%",
     height: "100%",
-    resizeMode: "contain",
+    marginVertical: 20,
+    marginVertical: 20,
   },
   connectButton: {
     flexDirection: "row",
@@ -78,6 +68,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "#5F7045",
     borderRadius: 50,
+    marginBottom: 20,
     paddingHorizontal: 20,
     paddingVertical: 10,
     opacity: 0.8,
@@ -99,10 +90,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     width: "90%",
+    
   },
   image: {
     width: "100%",
-    height: "70%",
+    height: "90%",
     borderRadius: 50,
     resizeMode: "stretch",
     borderColor: "#5F7045",
